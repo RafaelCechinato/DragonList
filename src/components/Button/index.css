@@ -1,0 +1,41 @@
+.button.login{
+    background-color: #FFC107;
+    border: 0;
+    border-radius: 5px;
+    color: black;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.button.login:hover{
+    background-color: #242424;
+    color: #FFC107;
+}
+
+.button.add{
+    background-color: #FFC107;
+    border: 0;
+    border-radius: 5px;
+    color: black;
+    border: 1px solid transparent;
+}
+
+.button.add:hover{
+    background-color: #242424;
+    color: #FFC107;
+    border: 1px solid #FFC107;
+}
+
+.button.cancel{
+    background-color: #d33;
+    border: 0;
+    border-radius: 5px;
+    color: #fff;
+    border: 1px solid transparent;
+}
+
+.button.cancel:hover{
+    background-color: #fff;
+    color: #d33;
+    border: 1px solid #d33;
+}
