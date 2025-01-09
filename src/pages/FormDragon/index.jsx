@@ -1,4 +1,5 @@
 import '../../index.css'
+import React, { useState } from 'react';
 import Card from '../../components/Card';
 import Col from '../../components/Col';
 import { useNavigate } from 'react-router-dom';
@@ -8,26 +9,82 @@ import { IoIosArrowBack } from "react-icons/io";
 import { useForm } from 'react-hook-form';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import { post,put } from './../../api';
+import Swal from 'sweetalert2';
 
 const FormDragon = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const dragonSelected = useSelector((state) => state.dragon.dragon_selected);
+    const isEditing = Object.keys(dragonSelected).length !== 0;
+    const [loading, setLoading] = useState(false);
+
     const {
       register,
       handleSubmit,
       clearErrors,
+      reset,
       formState: { errors },
-    } = useForm();
+    } = useForm({
+      defaultValues: {
+        name: isEditing?dragonSelected.name:"",
+        type: isEditing?dragonSelected.type:'',
+      },
+    });
 
-    const onSubmit = (data) => {
-    console.log('Dados do formulário:', data);
+    const createDragon = async (data) => {
+      setLoading(true);
+      try {
+        await post('/',data)
+        .then(() => {
+           Swal.fire(
+              'Criado!',
+              'O dragão criado com sucesso.',
+              'success'
+            );
+            reset();
+            goBack();
+        });
+      } catch (err) {
+        console.log("Err",err)
+      }finally{
+        setLoading(false)
+      }
     };
 
-    // const dragonSelected = useSelector((state) => state.dragon.dragon_selected);
+    const editDragon = async (data) => {
+      setLoading(true);
+      try {
+        await put(`/${dragonSelected.id}`,data)
+        .then(() => {
+           Swal.fire(
+              'Editado!',
+              'O dragão editado com sucesso.',
+              'success'
+            );
+            reset();
+            goBack();
+        });
+      } catch (err) {
+        console.log("Err",err)
+      }finally{
+        setLoading(false)
+      }
+    };
+
+    const onSubmit = (data) => {
+      if(isEditing){
+        editDragon(data);
+      }else{
+        createDragon(data);
+      }
+    };
 
     const goBack = () => {
-        // dispatch(cleanSelectedDragon())
+        if(isEditing){
+          dispatch(cleanSelectedDragon())
+        }
         navigate('/')
     }
 
@@ -44,6 +101,7 @@ const FormDragon = () => {
                     type="text"
                     label_title="Nome:"
                     placeholder="nome"
+                    disabled={loading}
                     register={register}
                     registerOptions={{
                       required: 'O nome é obrigatório',
@@ -61,6 +119,7 @@ const FormDragon = () => {
                     label_title="Tipo:"
                     placeholder="tipo"
                     register={register}
+                    disabled={loading}
                     registerOptions={{
                       required: 'O tipo é obrigatório',
                     }}
@@ -72,11 +131,12 @@ const FormDragon = () => {
                   />
                   <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent:"center",alignItems:"center" }}>
                     <Button 
+                      disabled={loading}
                       style={{marginTop:"25px",padding:"10px", width:"100px",fontWeight:"bold"}}
                       className="add"
                       type={'submit'}
                     >
-                      Cadastrar
+                      {isEditing?"Editar":"Cadastrar"}
                     </Button>
                   </div>
                 </form>

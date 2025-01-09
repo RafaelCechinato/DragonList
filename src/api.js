@@ -17,6 +17,26 @@ export const get = async (url, params = {}) => {
     }
 };
 
+export const post = async (url, body, params = {}) => {
+  try {
+    const response = await api.post(url, body, { params });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao realizar POST:', error);
+    throw error;
+  }
+};
+
+export const put = async (url, body, params = {}) => {
+  try {
+    const response = await api.put(url, body, { params });
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao realizar POST:', error);
+    throw error;
+  }
+};
+
 export const remove = async (url, params = {}) => {
   try {
     const response = await api.delete(url, { params });

@@ -72,6 +72,11 @@ const Home = () => {
       navigate('/view-dragon')
     }
 
+    const goToEditDragon = (dragon) => {
+      dispatch(selectDragon(dragon))
+      navigate('/form-dragon')
+    }
+
     const goToFormDragon = () => {
       navigate('/form-dragon')
     }
@@ -147,7 +152,7 @@ const Home = () => {
                       <Col col={1} className={"col-sm-12"} style={{ padding: '10px' }}>
                         <div style={{display:"flex",justifyContent:"end",alignItems:"center"}}>
                           <FaEye  size={20} color='black' className='c-pointer' style={{marginRight:"10px"}} onClick={() => viewDragon(dragon)}/>
-                          <FaPencilAlt size={20} color='black' className='c-pointer' style={{marginRight:"10px"}}/>
+                          <FaPencilAlt size={20} color='black' className='c-pointer' onClick={() => goToEditDragon(dragon)} style={{marginRight:"10px"}}/>
                           <FaTrashAlt size={20} color='red' className='c-pointer' onClick={() => alertDelete(dragon)} />
                         </div>
                       </Col>
